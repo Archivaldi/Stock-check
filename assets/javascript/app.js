@@ -1,3 +1,18 @@
+var firebaseConfig = {
+    apiKey: "AIzaSyCF0HvWofipxbCwadEyr8aQERIXe9WGr2s",
+    authDomain: "stock-check-e6ce3.firebaseapp.com",
+    databaseURL: "https://stock-check-e6ce3.firebaseio.com",
+    projectId: "stock-check-e6ce3",
+    storageBucket: "",
+    messagingSenderId: "404498187663",
+    appId: "1:404498187663:web:552ae95ccb695dcd"
+  };
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+var database = firebase.database();
+
 var stocks = [];
 
 $("#pushStock").on("click", function() {
