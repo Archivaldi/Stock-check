@@ -8,6 +8,26 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="screen_1">
+        <form>
+            <label for="signIn_email">Email:</label>
+            <input id="signIn_email" type="text">
+            <label for="signIn_password">Password:</label>
+            <input id="signIn_password" type="text">
+            <button id="Log_In">Log In</button>
+            <br>
+            <span>Not registered yet?<span><button>Sign Up</button>
+        </form>
+    </div>
+    <div id="screen_2">
+        <form>
+                <label for="signUp_email">Email:</label>
+                <input id="signUp_email" type="text" placeholder="Your Email">
+                <label for="signUp_password">Password:</label>
+                <input id="signUp_password" type="text" placeholder="Create a new password">
+                <button id="Log_Up">Sign Up</button>
+        </form>
+    </div>
     <h1>Stocks</h1>
     <form>
         <label for="symbol">Write a symbol</label>
@@ -16,7 +36,6 @@
     <button id="pushStock">Take a price</button>
     <div id="stocks"></div>
     <div id="checking"></div>
-    <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
     <script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="

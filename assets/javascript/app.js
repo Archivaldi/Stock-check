@@ -1,4 +1,4 @@
-stocks = [];
+var stocks = [];
 
 $("#pushStock").on("click", function() {
     var symbol = $("input[type=text]").val();
