@@ -1,3 +1,8 @@
+//listen for auth status changes
+auth.onAuthStateChanged(user => {
+    console.log(user);
+});
+
 //signUp
 $("#Sign_Up").on("click", (e) => {
     event.preventDefault();
