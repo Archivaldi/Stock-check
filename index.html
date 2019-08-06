@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Document</title>
 </head>
+
 <body>
     <div id="screen_1">
-        <form>
+        <form id="signIn_form">
             <label for="signIn_email">Email:</label>
-            <input id="signIn_email" type="text">
+            <input id="signIn_email" type="text" required>
             <label for="signIn_password">Password:</label>
-            <input id="signIn_password" type="text">
+            <input id="signIn_password" type="password" required>
             <button id="Log_In">Log In</button>
             <br>
             <span>Not registered yet?<span><button>Sign Up</button>
         </form>
+        <button id="log-out">Log Out</button>
     </div>
     <div id="screen_2">
-        <form>
-                <label for="signUp_email">Email:</label>
-                <input id="signUp_email" type="text" placeholder="Your Email">
-                <label for="signUp_password">Password:</label>
-                <input id="signUp_password" type="text" placeholder="Create a new password">
-                <button id="Log_Up">Sign Up</button>
+        <form id="signUp_form">
+            <label for="signUp_email">Email:</label>
+            <input id="signUp_email" type="text" placeholder="Your Email" required>
+            <label for="signUp_password">Password:</label>
+            <input id="signUp_password" type="password" placeholder="Create a new password" required>
+            <button id="Sign_Up">Sign Up</button>
         </form>
     </div>
     <h1>Stocks</h1>
@@ -36,14 +41,34 @@
     <button id="pushStock">Take a price</button>
     <div id="stocks"></div>
     <div id="checking"></div>
-    <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
- 
-<script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-database.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-firestore.js"></script>
+    <script src="assets/javascript/auth.js"></script>
+    <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+              apiKey: "AIzaSyCF0HvWofipxbCwadEyr8aQERIXe9WGr2s",
+              authDomain: "stock-check-e6ce3.firebaseapp.com",
+              databaseURL: "https://stock-check-e6ce3.firebaseio.com",
+              projectId: "stock-check-e6ce3",
+              storageBucket: "",
+              messagingSenderId: "404498187663",
+              appId: "1:404498187663:web:552ae95ccb695dcd"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            //make auth and firestore references
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+
+          </script>
 
     <script src="assets/javascript/app.js"></script>
 </body>
+
 </html>
