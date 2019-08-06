@@ -1,26 +1,53 @@
-$("#pushStock").on("click", function () {
-    var symbol = $("input[type=text]").val();
-    stocks.push(symbol);
-    $("#stocks").append("<button>");
-    $("#stocks button:last-child").text(symbol);
-})
+var portfolio = document.querySelector("#portfolio");
+//display firestoredata in portfolio
+const setupStock = (data) => {
+    if(data.length) {
+        let html ="";
 
-function checkPrice() {
-    $("#checking").empty();
-    for (var i = 0; i < stocks.length; i++) {
-        var symbol = stocks[i];
+        data.forEach(doc => {
+            const stock = doc.data();
+            const displayStock = `
+                <div class="displayStock">
+                    <h2>${stock.title}</h2>
+                    <p>${stock.price}</p>
+                </div>
+            `
+            html += displayStock;
+        });
+        
+        portfolio.innerHTML = html;
+
+    } else {
+        portfolio.innerHTML = "<h1>Please LogIn</h1>";
+}
+}
+
+//function for checkin price of stock
+$("#pushStock").on("click", function checkPrice() {
+    var symbol = $("#symbol").val();
+        $("#checking").empty();
+        // for (var i = 0; i < stocks.length; i++) {
         var u = "https://cloud.iexapis.com/stable/stock/" + symbol + "/quote?token=pk_ba9bdda0f20d46cba4e89a3e5a1d5317";
         $.ajax({
             method: "GET",
             url: u
         }).then(function (response) {
-            $("#checking").append("<h2>");
-            $("#checking h2:last-child").text(response.companyName);
-            $("#checking").append("<p>");
-            $("#checking p:last-child").text("Real Time Price: " + response.iexAskPrice + " Latest price: " + response.latestPrice);
+            ;
+            $("#checking").append("<div>");
+            $("#checking div").append("<h2>");
+            $("#checking div h2").text(response.companyName);
+            $("#checking div").append("<p>");
+            $("#checking div p").text("Real Time Price: " + response.iexAskPrice + " Latest price: " + response.latestPrice);
+            var addStock = $("<button>").attr("id", "addStock").text("Add to Portfolio").attr("data-price", response.latestPrice).attr("data-name", response.companyName);
+            $("#checking div").append(addStock);
 
         })
-    }
-}
+        // }
+})
 
-setInterval(checkPrice, 5000);
+$(document).on("click", "#addStock", () => {
+    db.collection("stocks").add({
+        title: $("#addStock").attr("data-name"),
+        price: $("#addStock").attr("data-price")
+    });
+});

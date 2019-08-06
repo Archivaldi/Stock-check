@@ -1,12 +1,15 @@
 //listen for auth status changes
 auth.onAuthStateChanged(user => {
     if (user) {
-        console.log("user logged in: ", user);
+        //get data from firestore
+        db.collection("stocks").get().then(snapshot => {
+            setupStock(snapshot.docs);
+        });
+
         $("#screen_3").show();
     } else {
-        console.log("user logged out");
+        setupStock ([]);
         $("#screen_2").hide();
-        $("#screen_3").hide();
     }
 });
 
@@ -27,7 +30,7 @@ $("#Sign_Up").on("click", (e) => {
 $("#log-out").on("click", (e) => {
     event.preventDefault();
     auth.signOut();
-    })
+})
 
 
 //log In
