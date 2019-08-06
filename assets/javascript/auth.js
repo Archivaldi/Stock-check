@@ -2,8 +2,11 @@
 auth.onAuthStateChanged(user => {
     if (user) {
         console.log("user logged in: ", user);
+        $("#screen_3").show();
     } else {
         console.log("user logged out");
+        $("#screen_2").hide();
+        $("#screen_3").hide();
     }
 });
 
