@@ -5,6 +5,7 @@ const setupStock = (data) => {
         let html = "";
 
         data.forEach(doc => {
+
             const stock = doc.data();
             const displayStock = `
                 <div class="displayStock">
@@ -15,6 +16,7 @@ const setupStock = (data) => {
             html += displayStock;
         });
 
+        //js finding "portfolio" in both html files
         if (portfolio) {
             portfolio.innerHTML = html;
         }

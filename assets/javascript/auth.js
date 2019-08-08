@@ -1,15 +1,39 @@
+const accountDetails = document.querySelector("#user-info");
 //listen for auth status changes
 auth.onAuthStateChanged(user => {
     if (user) {
+
+        // account info 
+        const html = `<h2>Logged in as ${user.email}</h2>`;
+        if (accountDetails) {
+            accountDetails.innerHTML = html;
+        }
+
+        //hide forms 
+        if (($("#signUp_form")) && ($("#signIn_form"))) {
+            $("#signUp_form").hide();
+            $("#signIn_form").hide();
+
+        }
         //get data from firestore
-        db.collection("stocks").get().then(snapshot => {
+        db.collection("stocks").onSnapshot(snapshot => {
             setupStock(snapshot.docs);
-        });
+        }, err => {
+            console.log(err.message);
+        })
 
         $("#screen_3").show();
     } else {
-        setupStock ([]);
-        $("#screen_2").hide();
+        if (($("#signUp_form")) && ($("#signIn_form"))) {
+            $("#signUp_form").show();
+            $("#signIn_form").show();
+        }
+        //show up signUp and singIn forms
+        //hide account info
+        if (accountDetails) {
+            accountDetails.innerHTML = "";
+        }
+        setupStock([]);
     }
 });
 
@@ -22,7 +46,12 @@ $("#Sign_Up").on("click", (e) => {
     const password = $("#signUp_password").val();
 
     auth.createUserWithEmailAndPassword(email, password).then(cred => {
+        return db.collection("users").doc(cred.user.uid).set({
+            age: $("#signUp_age").val()
+        })
+    }).then(() => {
         $("#signUp_form").hide();
+        $("#signIn_form").hide();
     })
 })
 
