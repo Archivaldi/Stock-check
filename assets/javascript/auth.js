@@ -1,4 +1,5 @@
 const accountDetails = document.querySelector("#user-info");
+let userUID = "";
 //listen for auth status changes
 auth.onAuthStateChanged(user => {
     if (user) {
@@ -21,7 +22,7 @@ auth.onAuthStateChanged(user => {
         }, err => {
             console.log(err.message);
         })
-
+        userUID = user.uid;
         $("#screen_3").show();
     } else {
         if (($("#signUp_form")) && ($("#signIn_form"))) {
