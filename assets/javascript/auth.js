@@ -16,15 +16,16 @@ auth.onAuthStateChanged(user => {
             $("#signIn_form").hide();
 
         }
+
+        //save userUID for access to user data
+        userUID = user.uid;
+
         //get data from firestore
-        db.collection("stocks").onSnapshot(snapshot => {
+        db.collection("users").doc(userUID).collection("stocks").onSnapshot(snapshot => {
             setupStock(snapshot.docs);
         }, err => {
             console.log(err.message);
         })
-        
-        //save userUID for access to user data
-        userUID = user.uid;
         $("#screen_3").show();
     } else {
         if (($("#signUp_form")) && ($("#signIn_form"))) {
