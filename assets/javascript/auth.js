@@ -22,6 +22,8 @@ auth.onAuthStateChanged(user => {
         }, err => {
             console.log(err.message);
         })
+        
+        //save userUID for access to user data
         userUID = user.uid;
         $("#screen_3").show();
     } else {

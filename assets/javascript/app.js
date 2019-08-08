@@ -23,7 +23,7 @@ const setupStock = (data) => {
 
     } else {
         if (portfolio) {
-            portfolio.innerHTML = "<h1>Please LogIn</h1>";
+            portfolio.innerHTML = "<h1>Please LogIn and/or add a stock into your portfolio</h1>";
         }
     }
 }
@@ -52,7 +52,7 @@ $("#pushStock").on("click", function checkPrice() {
 })
 
 $(document).on("click", "#addStock", () => {
-    db.collection("stocks").add({
+    db.collection("users").doc(userUID).collection("stocks").doc($("#addStock").attr("data-name")).set({
         title: $("#addStock").attr("data-name"),
         price: $("#addStock").attr("data-price")
     });
