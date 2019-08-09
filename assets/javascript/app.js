@@ -6,8 +6,6 @@ const setupStock = (data) => {
 
         data.forEach(doc => {
             const stock = doc.data();
-            ////////////////
-            //make app dynamic
             var symbol = stock.symbol;
             var u = "https://cloud.iexapis.com/stable/stock/" + symbol + "/quote?token=pk_ba9bdda0f20d46cba4e89a3e5a1d5317";
             $.ajax({

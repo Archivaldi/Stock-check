@@ -6,11 +6,6 @@ let userUID = "";
 auth.onAuthStateChanged(user => {
     if (user) {
 
-        // account info 
-        const html = `<h2>Logged in as ${user.email}</h2>`;
-        if (accountDetails) {
-            accountDetails.innerHTML = html;
-        }
 
         //hide forms 
         if (($("#signUp_form")) && ($("#signIn_form"))) {
@@ -21,6 +16,14 @@ auth.onAuthStateChanged(user => {
 
         //save userUID for access to user data
         userUID = user.uid;
+        db.collection("users").doc(userUID).get().then(doc => {
+            // account info 
+            const html = `<h2>Logged in as ${user.email}</h2>
+            <h3>Hello ${doc.data().First_Name} ${doc.data().Last_Name}<h3/>`;
+            if (accountDetails) {
+                accountDetails.innerHTML = html;
+            }
+        })
 
         //get data from firestore
         db.collection("users").doc(userUID).collection("stocks").onSnapshot(snapshot => {
