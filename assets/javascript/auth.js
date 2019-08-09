@@ -1,4 +1,6 @@
 const accountDetails = document.querySelector("#user-info");
+let firstName = "";
+let lastName = "";
 let userUID = "";
 //listen for auth status changes
 auth.onAuthStateChanged(user => {

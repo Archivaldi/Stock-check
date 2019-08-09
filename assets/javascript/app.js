@@ -80,7 +80,6 @@ function uploadStockInfo() {
             method: "GET",
             url: u
         }).then(function (response) {
-            debugger;
             stockPrice[i].innerHTML = response.latestPrice;
         });
     };
