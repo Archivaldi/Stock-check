@@ -50,15 +50,24 @@ $("#Sign_Up").on("click", (e) => {
     //get user info
     const email = $("#signUp_email").val();
     const password = $("#signUp_password").val();
+    const firstName = $("#First_Name").val();
+    const lastName = $("#Last_Name").val();
 
-    auth.createUserWithEmailAndPassword(email, password).then(cred => {
-        return db.collection("users").doc(cred.user.uid).set({
-            age: $("#signUp_age").val()
+    if ((email != "") && (password != "") && (firstName != "") && (lastName != "")) {
+        auth.createUserWithEmailAndPassword(email, password).then(cred => {
+            return db.collection("users").doc(cred.user.uid).set({
+                First_Name: firstName,
+                Last_Name: lastName
+            })
+        }).then(() => {
+            $("#signUp_form").hide();
+            $("#signIn_form").hide();
+            $("#error").text("");
         })
-    }).then(() => {
-        $("#signUp_form").hide();
-        $("#signIn_form").hide();
-    })
+    } else {
+        $("#error").text("Please, fill out all fields");
+    }
+
 })
 
 //log out
