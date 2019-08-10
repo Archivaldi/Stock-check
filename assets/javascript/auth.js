@@ -1,28 +1,29 @@
+const accountInfo = document.querySelector(".account-details");
 const accountDetails = document.querySelector("#user-info");
 let firstName = "";
 let lastName = "";
 let userUID = "";
+let userEmail = "";
 //listen for auth status changes
 auth.onAuthStateChanged(user => {
     if (user) {
-
-
-        //hide forms 
-        if (($("#signUp_form")) && ($("#signIn_form"))) {
-            $("#signUp_form").hide();
-            $("#signIn_form").hide();
-
-        }
-
         //save userUID for access to user data
         userUID = user.uid;
+        userEmail = user.email;
         db.collection("users").doc(userUID).get().then(doc => {
             // account info 
-            const html = `<h2>Logged in as ${user.email}</h2>
-            <h3>Hello ${doc.data().First_Name} ${doc.data().Last_Name}<h3/>`;
+            const html = `<h4>Hello ${doc.data().First_Name} ${doc.data().Last_Name}<h4/>`;
             if (accountDetails) {
                 accountDetails.innerHTML = html;
             }
+            const accountFullInfo = `<h4>First name: ${doc.data().First_Name}</h4>
+                                <h4>Last name: ${doc.data().Last_Name}</h4>
+                                 <h4>Email: ${userEmail}</h4>`
+            if (accountInfo) {
+                accountInfo.innerHTML = accountFullInfo;
+            }
+
+            uploadStockInfo();
         })
 
         //get data from firestore
@@ -31,30 +32,29 @@ auth.onAuthStateChanged(user => {
         }, err => {
             console.log(err.message);
         })
-        $("#screen_3").show();
+        setupUI(user);
     } else {
-        if (($("#signUp_form")) && ($("#signIn_form"))) {
-            $("#signUp_form").show();
-            $("#signIn_form").show();
-        }
-        //show up signUp and singIn forms
         //hide account info
         if (accountDetails) {
             accountDetails.innerHTML = "";
         }
+        if (accountInfo) {
+            accountInfo.innerHTML = "";
+        }
         setupStock([]);
+        setupUI();
     }
 });
 
 //signUp
 $("#Sign_Up").on("click", (e) => {
     event.preventDefault();
-
     //get user info
     const email = $("#signUp_email").val();
     const password = $("#signUp_password").val();
     const firstName = $("#First_Name").val();
     const lastName = $("#Last_Name").val();
+    const signUpForm = document.querySelector("#signUp_form");
 
     if ((email != "") && (password != "") && (firstName != "") && (lastName != "")) {
         auth.createUserWithEmailAndPassword(email, password).then(cred => {
@@ -63,8 +63,9 @@ $("#Sign_Up").on("click", (e) => {
                 Last_Name: lastName
             })
         }).then(() => {
-            $("#signUp_form").hide();
-            $("#signIn_form").hide();
+            const modal = document.querySelector("#modal-signup");
+            M.Modal.getInstance(modal).close();
+            signUpForm.reset();
             $("#error").text("");
         })
     } else {
@@ -87,7 +88,11 @@ $("#Log_In").on("click", (e) => {
     //get user info
     const email = $("#signIn_email").val();
     const password = $("#signIn_password").val();
+    const signInForm = document.querySelector("#signIn_form");
 
     auth.signInWithEmailAndPassword(email, password).then(cred => {
+        const modal = document.querySelector("#modal-login");
+        M.Modal.getInstance(modal).close();
+        signInForm.reset();
     })
 })

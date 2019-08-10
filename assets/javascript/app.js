@@ -1,4 +1,17 @@
 var portfolio = document.querySelector("#portfolio");
+const loggedOutLinks = document.querySelectorAll(".logged-out");
+const loggedInLinks = document.querySelectorAll(".logged-in");
+
+//toggle elements
+setupUI = (user) => {
+    if (user) {
+        loggedInLinks.forEach(item => item.style.display = "block");
+        loggedOutLinks.forEach(item => item.style.display = "none");
+    } else {
+        loggedInLinks.forEach(item => item.style.display = "none");
+        loggedOutLinks.forEach(item => item.style.display = "block");
+    }
+}
 //display firestoredata in portfolio
 const setupStock = (data) => {
     if (data.length) {
@@ -13,11 +26,13 @@ const setupStock = (data) => {
                 url: u
             }).then(function (response) {
                 const displayStock = `
-                <div class="displayStock">
-                    <h2>${response.companyName}</h2>
+                <div class="card blue-grey darken-1">
+                <div class="displayStock card-content white-text">
+                    <h2 class="card-title">${response.companyName}</h2>
                     <p class="symbols">${response.symbol}</p>
                     <p class="prices">${response.latestPrice}</p>
                     <p>${response.latestTime}</p>
+                </div>
                 </div>
             `
                 html += displayStock;
@@ -40,6 +55,7 @@ const setupStock = (data) => {
 
 //function for checkin price of stock
 $("#pushStock").on("click", function checkPrice() {
+    event.preventDefault();
     var symbol = $("#symbol").val();
     $("#checking").empty();
     var u = "https://cloud.iexapis.com/stable/stock/" + symbol + "/quote?token=pk_ba9bdda0f20d46cba4e89a3e5a1d5317";
@@ -48,16 +64,17 @@ $("#pushStock").on("click", function checkPrice() {
         url: u
     }).then(function (response) {
         console.log(response);
-        $("#checking").append("<div>");
-        $("#checking div").append("<h2>");
-        $("#checking div h2").text(response.companyName);
-        $("#checking div").append("<p>");
-        $("#checking div p:last-child").text("Real Time Price: " + response.iexAskPrice + " Latest price: " + response.latestPrice);
-        $("#checking div").append("<p>");
-        $("#checking div p:last-child").text(response.latestTime);
-        var addStock = $("<button>").attr("id", "addStock").text("Add to Portfolio").attr("data-symbol", response.symbol).attr("data-name", response.companyName);
-        $("#checking div").append(addStock);
+        $("#stockTitle").text(response.companyName);
+        $("#stockInfo").empty();
+        $("#stockInfo").append("<p>");
+        $("#stockInfo p:last-child").text("Latest price: " + response.latestPrice);
+        $("#stockInfo").append("<p>");
+        $("#stockInfo p:last-child").text(response.latestTime);
+        var addStock = $("<a>").attr("id", "addStock").text("Add to Portfolio").attr("data-symbol", response.symbol).attr("data-name", response.companyName);
+        $(".card-action").empty();
+        $(".card-action").append(addStock);
     })
+    document.querySelector("#stockSearchForm").reset();
 })
 
 $(document).on("click", "#addStock", () => {
@@ -83,4 +100,13 @@ function uploadStockInfo() {
     };
 };
 
+//checking price every 10sec
 setInterval(uploadStockInfo, 10000);
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    var modals = document.querySelectorAll(".modal");
+    if (modals){
+        M.Modal.init(modals);
+    }
+})
