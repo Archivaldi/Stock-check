@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,84 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <title>Portfolio</title>
 </head>
+
 <body>
-    <div class="container" id="portfolio"></div>
+    <div class="container">
+        <nav class="z-depth-0">
+            <div class="nav-wrapper blue-grey darken-1">
+                <a href="index.html" class="brand-logo-right blue-grey darken-1" style="padding: 20px;">Stock
+                    Check</a><span>
+                    <a href="portfolio.html" class="brand-logo-right blue-grey darken-1"> Portfolio </a>
+
+                    <!-- Pop up modals -->
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li class="logged-in">
+                            <a href="#" class="modal-trigger" data-target="modal-account">Account</a>
+                        </li>
+                        <li class="logged-in">
+                            <a href="#" id="log-out" class="modal-trigger">Logout</a>
+                        </li>
+                        <li class="logged-out">
+                            <a href="#" class="modal-trigger" data-target="modal-login">Login</a>
+                        </li>
+                        <li class="logged-out">
+                            <a href="#" class="modal-trigger" data-target="modal-signup">Sign Up</a>
+                        </li>
+
+                    </ul>
+            </div>
+        </nav>
+        <!-- Sign Up Modal -->
+        <div id="modal-signup" class="modal">
+            <div class="modal-content">
+                <h4>Sign Up</h4>
+                <form id="signUp_form">
+                    <label for="signUp_email">Email:</label>
+                    <input id="signUp_email" type="text" required />
+                    <br>
+                    <label for="signUp_password">Password:</label>
+                    <input id="signUp_password" type="password" required />
+                    <br>
+                    <label for="First_Name">First name:</label>
+                    <input type="text" id="First_Name" required />
+                    <br>
+                    <label for="Last_Name">Last name:</label>
+                    <input type="text" id="Last_Name" required />
+                    <br>
+                    <a class="waves-effect waves-black btn-flat" style="margin-left: 0px;" id="Sign_Up">Submit</a>
+                </form>
+                <p id="error"></p>
+
+            </div>
+        </div>
+
+        <!-- Sign In Modal -->
+        <div id="modal-login" class="modal">
+            <div class="modal-content">
+                <h4>Login</h4>
+                <form id="signIn_form">
+                    <label for="signIn_email">Email:</label>
+                    <input id="signIn_email" type="text" required>
+                    <br>
+                    <label for="signIn_password">Password:</label>
+                    <input id="signIn_password" type="password" required>
+                    <br>
+                    <a class="waves-effect waves-black btn-flat" style="margin-left: 0px;" id="Log_In">Log In</a>
+                </form>
+            </div>
+        </div>
+
+        <!-- Account  Modal -->
+        <div id="modal-account" class="modal">
+            <div class="modal-content center-align">
+                <h4>Account details</h4>
+                <div class="account-details">
+
+                </div>
+            </div>
+        </div>
+        <div id="portfolio"></div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -41,5 +118,5 @@
     <script src="assets/javascript/auth.js"></script>
     <script src="assets/javascript/app.js"></script>
 </body>
-</html>
 
+</html>

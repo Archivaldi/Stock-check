@@ -3,7 +3,7 @@ const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
 
 //toggle elements
-setupUI = (user) => {
+const setupUI = (user) => {
     if (user) {
         loggedInLinks.forEach(item => item.style.display = "block");
         loggedOutLinks.forEach(item => item.style.display = "none");
@@ -67,7 +67,7 @@ $("#pushStock").on("click", function checkPrice() {
         $("#stockTitle").text(response.companyName);
         $("#stockInfo").empty();
         $("#stockInfo").append("<p>");
-        $("#stockInfo p:last-child").text("Latest price: " + response.latestPrice);
+        $("#stockInfo p:last-child").text("Latest price: $" + response.latestPrice);
         $("#stockInfo").append("<p>");
         $("#stockInfo p:last-child").text(response.latestTime);
         var addStock = $("<a>").attr("id", "addStock").text("Add to Portfolio").attr("data-symbol", response.symbol).attr("data-name", response.companyName);
@@ -101,7 +101,7 @@ function uploadStockInfo() {
 };
 
 //checking price every 10sec
-setInterval(uploadStockInfo, 10000);
+setInterval(uploadStockInfo, 1000*10);
 
 
 document.addEventListener("DOMContentLoaded", function () {

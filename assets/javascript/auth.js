@@ -94,5 +94,8 @@ $("#Log_In").on("click", (e) => {
         const modal = document.querySelector("#modal-login");
         M.Modal.getInstance(modal).close();
         signInForm.reset();
+        $("#sighInError").text("");
+    }).catch(err => {
+        $("#signInError").text(err.message);
     })
-})
+});
