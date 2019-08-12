@@ -27,11 +27,12 @@ const setupStock = (data) => {
             }).then(function (response) {
                 const displayStock = `
                 <div class="card blue-grey darken-1">
-                <div class="displayStock card-content white-text">
+                <div class="displayStock card-content white-text" id="${response.companyName}">
                     <h2 class="card-title">${response.companyName}</h2>
                     <p class="symbols">${response.symbol}</p>
                     <p class="prices">${response.latestPrice}</p>
                     <p>${response.latestTime}</p>
+                    <button id="removeStock">Remove</button>
                 </div>
                 </div>
             `
@@ -41,7 +42,7 @@ const setupStock = (data) => {
                     portfolio.innerHTML = html;
                 }
             })
-            //////////////////
+
 
         });
 
@@ -73,14 +74,17 @@ $("#pushStock").on("click", function checkPrice() {
         var addStock = $("<a>").attr("id", "addStock").text("Add to Portfolio").attr("data-symbol", response.symbol).attr("data-name", response.companyName);
         $(".card-action").empty();
         $(".card-action").append(addStock);
+
     })
     document.querySelector("#stockSearchForm").reset();
 })
 
 $(document).on("click", "#addStock", () => {
-    db.collection("users").doc(userUID).collection("stocks").doc($("#addStock").attr("data-name")).set({
-        symbol: $("#addStock").attr("data-symbol")
-    });
+    if ($("#stockTitle").text() != "Stock Price") {
+        db.collection("users").doc(userUID).collection("stocks").doc($("#addStock").attr("data-name")).set({
+            symbol: $("#addStock").attr("data-symbol")
+        });
+    };
 });
 
 
@@ -89,7 +93,7 @@ function uploadStockInfo() {
     var stockSymbol = document.querySelectorAll(".symbols");
     var stockPrice = document.querySelectorAll(".prices");
     var num = $(portfolio).children().length;
-    for (let i = 0; i < num ; i++) {
+    for (let i = 0; i < num; i++) {
         var u = "https://cloud.iexapis.com/stable/stock/" + stockSymbol[i].innerHTML + "/quote?token=pk_ba9bdda0f20d46cba4e89a3e5a1d5317";
         $.ajax({
             method: "GET",
@@ -101,12 +105,17 @@ function uploadStockInfo() {
 };
 
 //checking price every 10sec
-setInterval(uploadStockInfo, 1000*10);
+setInterval(uploadStockInfo, 1000 * 60 * 5);
 
 
 document.addEventListener("DOMContentLoaded", function () {
     var modals = document.querySelectorAll(".modal");
-    if (modals){
+    if (modals) {
         M.Modal.init(modals);
     }
+});
+
+$(document).on("click", "#removeStock", function (e) {
+    let suid = e.target.parentElement.getAttribute("id");
+    db.collection("users").doc(userUID).collection("stocks").doc(suid).delete();
 })
