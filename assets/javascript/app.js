@@ -103,7 +103,6 @@ function uploadStockInfo() {
             url: u
         }).then(function (response) {
             stockPrice[i].innerHTML = response.latestPrice;
-            console.log(response.latestTime);
         });
     };
 };
@@ -127,25 +126,45 @@ $(document).on("click", "#removeStock", function (e) {
 //creating chat
 
 $("#questionSubmit").on("click", () => {
+    let message = $("#question").val().trim();
     let counterStr = counter.toString();
     let messageForm = document.querySelector("#messageForm");
-    let message = $("#question").val();
-    db.collection("chat").doc(counterStr).set({
-        First_Name: firstName,
-        Last_Name: lastName,
-        message: message,
-    }).then(() => {
-        messageForm.reset();
-    });
+    if (message != "") {
+        db.collection("chat").doc(counterStr).set({
+            First_Name: firstName,
+            Last_Name: lastName,
+            message: message,
+            number: counter
+        }).then(() => {
+            messageForm.reset();
+        });
+    }
 });
+
+// const showChat = (data) => {
+//     counter = data.length;
+//     let allMessages = "";
+//     for (let i = 0; i < counter; i++) {
+//         iStr = i.toString();
+//         db.collection("chat").doc(iStr).get().then(doc => {
+//             var userMessage = doc.data();
+//             var messageData = `<p>${userMessage.First_Name} ${userMessage.Last_Name}: ${userMessage.message}</p>`;
+//             allMessages += messageData;
+//         })
+//     }
+//     messageArea.innerHTML = allMessages;
+// }
 
 const showChat = (data) => {
     counter = data.length;
     let html = "";
-    for (var i = 0; i < counter; i++) {
-        let userMessage = data[i].data();
-        let messageData = `<p>${userMessage.First_Name} ${userMessage.Last_Name}: ${userMessage.message}</p>`;
-        html += messageData;
-    }
+        for (let i = 0; i < counter; i++) {
+            let iStr = i.toString();
+            let userMessage = data[i].data();
+            let messageData = `<p>${userMessage.First_Name} ${userMessage.Last_Name}: ${userMessage.message}</p>`;
+            html += messageData;
+            console.log(userMessage);
+        }
+    
     messageArea.innerHTML = html;
 }

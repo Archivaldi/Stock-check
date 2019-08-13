@@ -4,7 +4,8 @@ let firstName = "";
 let lastName = "";
 let userUID = "";
 let userEmail = "";
-let counter = 0;
+let counter;
+var iStr;
 //listen for auth status changes
 auth.onAuthStateChanged(user => {
     if (user) {
@@ -38,9 +39,10 @@ auth.onAuthStateChanged(user => {
         })
 
          //get messages from firestore
-         db.collection("chat").onSnapshot(snapshot => {
+         db.collection("chat").orderBy("number").onSnapshot(snapshot => {
             showChat(snapshot.docs);
-        })
+        });
+
         
         setupUI(user);
     } else {
