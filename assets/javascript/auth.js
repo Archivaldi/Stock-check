@@ -4,6 +4,7 @@ let firstName = "";
 let lastName = "";
 let userUID = "";
 let userEmail = "";
+let counter = 0;
 //listen for auth status changes
 auth.onAuthStateChanged(user => {
     if (user) {
@@ -27,10 +28,6 @@ auth.onAuthStateChanged(user => {
             }
 
             uploadStockInfo();
-
-            db.collection("chat").onSnapshot(snapshot => {
-                showChat(snapshot.docs);
-            })
         })
 
         //get data from firestore
@@ -40,11 +37,11 @@ auth.onAuthStateChanged(user => {
             console.log(err.message);
         })
 
-        //get messages from firestore
-        db.collection("chat").doc().get().then(doc => {
-            console.log(doc.data());
+         //get messages from firestore
+         db.collection("chat").onSnapshot(snapshot => {
+            showChat(snapshot.docs);
         })
-
+        
         setupUI(user);
     } else {
         //hide account info

@@ -3,6 +3,8 @@ const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
 const messageArea = document.querySelector("#answer");
 
+
+
 //toggle elements
 const setupUI = (user) => {
     if (user) {
@@ -125,9 +127,10 @@ $(document).on("click", "#removeStock", function (e) {
 //creating chat
 
 $("#questionSubmit").on("click", () => {
+    let counterStr = counter.toString();
     let messageForm = document.querySelector("#messageForm");
     let message = $("#question").val();
-    db.collection("chat").add({
+    db.collection("chat").doc(counterStr).set({
         First_Name: firstName,
         Last_Name: lastName,
         message: message,
@@ -137,11 +140,12 @@ $("#questionSubmit").on("click", () => {
 });
 
 const showChat = (data) => {
+    counter = data.length;
     let html = "";
-    data.forEach (doc => {
-        const userMessage = doc.data();
+    for (var i = 0; i < counter; i++) {
+        let userMessage = data[i].data();
         let messageData = `<p>${userMessage.First_Name} ${userMessage.Last_Name}: ${userMessage.message}</p>`;
         html += messageData;
-    })
+    }
     messageArea.innerHTML = html;
 }
