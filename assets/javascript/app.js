@@ -124,13 +124,11 @@ $(document).on("click", "#removeStock", function (e) {
 });
 
 //creating chat
-
 $("#questionSubmit").on("click", () => {
     let message = $("#question").val().trim();
-    let counterStr = counter.toString();
     let messageForm = document.querySelector("#messageForm");
     if (message != "") {
-        db.collection("chat").doc(counterStr).set({
+        db.collection("chat").doc().set({
             First_Name: firstName,
             Last_Name: lastName,
             message: message,
@@ -141,25 +139,11 @@ $("#questionSubmit").on("click", () => {
     }
 });
 
-// const showChat = (data) => {
-//     counter = data.length;
-//     let allMessages = "";
-//     for (let i = 0; i < counter; i++) {
-//         iStr = i.toString();
-//         db.collection("chat").doc(iStr).get().then(doc => {
-//             var userMessage = doc.data();
-//             var messageData = `<p>${userMessage.First_Name} ${userMessage.Last_Name}: ${userMessage.message}</p>`;
-//             allMessages += messageData;
-//         })
-//     }
-//     messageArea.innerHTML = allMessages;
-// }
-
+//show chat 
 const showChat = (data) => {
     counter = data.length;
     let html = "";
         for (let i = 0; i < counter; i++) {
-            let iStr = i.toString();
             let userMessage = data[i].data();
             let messageData = `<p>${userMessage.First_Name} ${userMessage.Last_Name}: ${userMessage.message}</p>`;
             html += messageData;
