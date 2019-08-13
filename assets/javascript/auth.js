@@ -53,6 +53,7 @@ auth.onAuthStateChanged(user => {
         }
         setupStock([]);
         setupUI();
+        showChat([]);
     }
 });
 
