@@ -11,8 +11,11 @@ auth.onAuthStateChanged(user => {
         userUID = user.uid;
         userEmail = user.email;
         db.collection("users").doc(userUID).get().then(doc => {
+
+            firstName = doc.data().First_Name;
+            lastName = doc.data().Last_Name;
             // account info 
-            const html = `<h4>Hello ${doc.data().First_Name} ${doc.data().Last_Name}<h4/>`;
+            const html = `<h4>Hello ${firstName} ${lastName}<h4/>`;
             if (accountDetails) {
                 accountDetails.innerHTML = html;
             }
@@ -24,6 +27,10 @@ auth.onAuthStateChanged(user => {
             }
 
             uploadStockInfo();
+
+            db.collection("chat").onSnapshot(snapshot => {
+                showChat(snapshot.docs);
+            })
         })
 
         //get data from firestore
@@ -32,6 +39,12 @@ auth.onAuthStateChanged(user => {
         }, err => {
             console.log(err.message);
         })
+
+        //get messages from firestore
+        db.collection("chat").doc().get().then(doc => {
+            console.log(doc.data());
+        })
+
         setupUI(user);
     } else {
         //hide account info

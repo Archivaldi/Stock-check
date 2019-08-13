@@ -1,6 +1,7 @@
 var portfolio = document.querySelector("#portfolio");
 const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
+const messageArea = document.querySelector("#answer");
 
 //toggle elements
 const setupUI = (user) => {
@@ -100,6 +101,7 @@ function uploadStockInfo() {
             url: u
         }).then(function (response) {
             stockPrice[i].innerHTML = response.latestPrice;
+            console.log(response.latestTime);
         });
     };
 };
@@ -118,4 +120,28 @@ document.addEventListener("DOMContentLoaded", function () {
 $(document).on("click", "#removeStock", function (e) {
     let suid = e.target.parentElement.getAttribute("id");
     db.collection("users").doc(userUID).collection("stocks").doc(suid).delete();
-})
+});
+
+//creating chat
+
+$("#questionSubmit").on("click", () => {
+    let messageForm = document.querySelector("#messageForm");
+    let message = $("#question").val();
+    db.collection("chat").add({
+        First_Name: firstName,
+        Last_Name: lastName,
+        message: message,
+    }).then(() => {
+        messageForm.reset();
+    });
+});
+
+const showChat = (data) => {
+    let html = "";
+    data.forEach (doc => {
+        const userMessage = doc.data();
+        let messageData = `<p>${userMessage.First_Name} ${userMessage.Last_Name}: ${userMessage.message}</p>`;
+        html += messageData;
+    })
+    messageArea.innerHTML = html;
+}
