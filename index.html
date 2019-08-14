@@ -199,28 +199,6 @@
             </form>
         </div>
     </div>
-
-    <!-- <svg viewBox="0 0 500 100" class="chart">
-            <polyline
-               fill="none"
-               stroke="#0074d9"
-               stroke-width="3"
-               points="
-                 0,120
-                 20,60
-                 40,80
-                 60,20
-                 65, 100"/>
-          </svg> -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-https://firebase.google.com/docs/web/setup#config-web-app -->
-
-
     <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-firestore.js"></script>
@@ -250,3 +228,83 @@ https://firebase.google.com/docs/web/setup#config-web-app -->
 </body>
 
 </html>
+
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  
+</head>
+
+<body>
+  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+  <input type="text">
+  <button>Submit</button>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <!-- <script>
+    function countProperties(obj) {
+      var count = 0;
+
+      for (var property in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, property)) {
+          count++;
+        }
+      }
+
+      return count;
+    }
+
+      $("button").on("click", function () {
+        var points = [];
+        var v = $('input[type=text]').val();
+        var w = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol="+v+"&apikey=Q26EYZTYRUMY42LC";
+        $.ajax({
+          method: "GET",
+          url: w
+        }).then(response => {
+          var childrenCount = countProperties(response["Monthly Time Series"]);
+          var prices = [];
+          for (var dates in response["Monthly Time Series"]) {
+            var num = parseFloat(response["Monthly Time Series"][dates]["4. close"]);
+            prices.unshift(num);
+          };
+
+          for (let i = prices.length - 12; i < prices.length; i++) {
+            points.push(prices[i]);
+          };
+          console.log(points);
+          var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+              text: "Simple Line Chart"
+            },
+            axisY: {
+              includeZero: false
+            },
+            data: [{
+              type: "line",
+              dataPoints: [
+                { y: points[0] }, { y: points[1] }, { y: points[2] },
+                { y: points[3] },
+                { y: points[4] },
+                { y: points[5] },
+                { y: points[6] },
+                { y: points[7] },
+                { y: points[8] },
+                { y: points[9] },
+                { y: points[10] },
+                { y: points[11] },
+              ]
+            }]
+          });
+          chart.render();
+        })
+      })
+  </script>
+</body>
+
+</html> -->
