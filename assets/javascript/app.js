@@ -115,9 +115,10 @@ $("#pushStock").on("click", function checkPrice() {
         method: "GET",
         url: u
     }).then(function (response) {
-        console.log(response);
         $("#stockTitle").text(response.companyName);
         $("#stockInfo").empty();
+        $("#stockInfo").append("<p>");
+        $("#stockInfo p:last-child").text("Ticker: " + response.symbol);
         $("#stockInfo").append("<p>");
         $("#stockInfo p:last-child").text("Latest price: $" + response.latestPrice);
         $("#stockInfo").append("<p>");
@@ -135,11 +136,14 @@ $("#pushStock").on("click", function checkPrice() {
                 method: "GET",
                 url: w
             }).then(function (data) {
+                console.log(data);
                 for (var i = 0; i < data.cryptocurrenciesList.length; i++) {
                     if (v == data.cryptocurrenciesList[i].name) {
                         // place the price on the html of the card
                         $("#stockTitle").text(data.cryptocurrenciesList[i].name);
                         $("#stockInfo").empty();
+                        $("#stockInfo").append("<p>");
+                        $("#stockInfo p:last-child").text("Ticker: " + data.cryptocurrenciesList[i].ticker);
                         $("#stockInfo").append("<p>");
                         $("#stockInfo p:last-child").text("Latest price: $" + data.cryptocurrenciesList[i].price);
                         $("#stockInfo").append("<p>");
@@ -208,7 +212,6 @@ $("#pushStock").on("click", function checkPrice() {
           for (let i = 0; i < pricesDay.length; i++) {
             pointsDay.push({y: pricesDay[i]});
           };
-          console.log(pointsDay);
   
           var chart = new CanvasJS.Chart("chartContainer1", {
             animationEnabled: true,
