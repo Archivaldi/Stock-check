@@ -18,18 +18,18 @@
                     <a href="portfolio.html" class="brand-logo-right blue-grey darken-1"> Portfolio </a>
 
                     <!-- Pop up modals -->
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <ul id="nav-mobile" class="right hide-on-med-and-down" style="display: none">
                         <li class="logged-in">
-                            <a href="#" class="modal-trigger" data-target="modal-account">Account</a>
+                            <a href="#" class="modal-trigger" data-target="modal-account" style="display: none">Account</a>
                         </li>
                         <li class="logged-in">
-                            <a href="#" id="log-out" class="modal-trigger">Logout</a>
+                            <a href="#" id="log-out" class="modal-trigger" style="display: none">Logout</a>
                         </li>
                         <li class="logged-out">
-                            <a href="#" class="modal-trigger" data-target="modal-login">Login</a>
+                            <a href="#" class="modal-trigger" data-target="modal-login" style="display: none">Login</a>
                         </li>
                         <li class="logged-out">
-                            <a href="#" class="modal-trigger" data-target="modal-signup">Sign Up</a>
+                            <a href="#" class="modal-trigger" data-target="modal-signup" style="display: none">Sign Up</a>
                         </li>
 
                     </ul>
@@ -86,7 +86,8 @@
         </div>
         <div id="portfolio"></div>
     </div>
-
+    
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

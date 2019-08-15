@@ -188,6 +188,45 @@ $("#pushStock").on("click", function checkPrice() {
           chart.render();
         })
 
+        var pointsDay = [];
+        var w = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+symbol+"&interval=5min&apikey=Q26EYZTYRUMY42LC";
+  
+        $.ajax({
+          method: "GET",
+          url: w
+        }).then(response => {
+          var childrenCount = countProperties(response["Time Series (5min)"]);
+    
+          var pricesDay = [];
+    
+          for (var dates in response["Time Series (5min)"]) {
+            var num = parseFloat(response["Time Series (5min)"][dates]["4. close"]);
+            pricesDay.unshift(num);
+          };
+    
+  
+          for (let i = 0; i < pricesDay.length; i++) {
+            pointsDay.push({y: pricesDay[i]});
+          };
+          console.log(pointsDay);
+  
+          var chart = new CanvasJS.Chart("chartContainer1", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+              text: "Today stock history"
+            },
+            axisY: {
+              includeZero: false
+            },
+            data: [{
+              type: "line",
+              dataPoints: pointsDay
+            }]
+          });
+          chart.render();
+        })
+  
     document.querySelector("#stockSearchForm").reset();
 })
 
