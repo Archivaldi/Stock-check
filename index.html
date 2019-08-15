@@ -181,11 +181,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col s12 m8" style="margin-left: 0px;">
+            <div class="col s12 m8" style="margin-left: 0px; height: 209px;">
                 <div class="card blue-grey darken-1">
                     <div class="card-content white-text">
                         <span class="card-title">Graphs</span>
-                        <p>I will display the graphs for the particular stock price for what the user requests</p>
+                        <div id="chartContainer" style="height: 120px; width: 45%;"></div>
                     </div>
                 </div>
             </div>
@@ -199,6 +199,10 @@
             </form>
         </div>
     </div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-firestore.js"></script>
@@ -230,7 +234,7 @@
 </html>
 
 
-<!DOCTYPE HTML>
+<!-- <!DOCTYPE HTML>
 <html>
 
 <head>
@@ -243,7 +247,7 @@
   <button>Submit</button>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
   <!-- <script>
     function countProperties(obj) {
       var count = 0;
@@ -273,32 +277,21 @@
           };
 
           for (let i = prices.length - 12; i < prices.length; i++) {
-            points.push(prices[i]);
+            points.push({y: prices[i]});
           };
           console.log(points);
           var chart = new CanvasJS.Chart("chartContainer", {
             animationEnabled: true,
             theme: "light2",
             title: {
-              text: "Simple Line Chart"
+              text: "1 year stock history"
             },
             axisY: {
               includeZero: false
             },
             data: [{
               type: "line",
-              dataPoints: [
-                { y: points[0] }, { y: points[1] }, { y: points[2] },
-                { y: points[3] },
-                { y: points[4] },
-                { y: points[5] },
-                { y: points[6] },
-                { y: points[7] },
-                { y: points[8] },
-                { y: points[9] },
-                { y: points[10] },
-                { y: points[11] },
-              ]
+              dataPoints: points
             }]
           });
           chart.render();

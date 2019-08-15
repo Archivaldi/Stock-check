@@ -15,6 +15,21 @@ const setupUI = (user) => {
         loggedOutLinks.forEach(item => item.style.display = "block");
     }
 }
+
+//function for counting object length
+function countProperties(obj) {
+    var count = 0;
+
+    for (var property in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, property)) {
+        count++;
+      }
+    }
+
+    return count;
+  }
+
+
 //display firestoredata in portfolio
 const setupStock = (data) => {
     if (data.length) {
@@ -106,13 +121,12 @@ $("#pushStock").on("click", function checkPrice() {
         $("#stockInfo").append("<p>");
         $("#stockInfo p:last-child").text("Latest price: $" + response.latestPrice);
         $("#stockInfo").append("<p>");
-        $("#stockInfo p:last-child").text(response.latestTime);
-        $("#stockInfo").append("<p>");
         $("#stockInfo p:last-child").text(date);
         var addStock = $("<a>").attr("id", "addStock").text("Add to Portfolio").attr("data-symbol", response.symbol).attr("data-name", response.companyName);
         $(".card-action").empty();
         $(".card-action").append(addStock);
 
+        //if we have a error, we know that symbol is not a stoc, then we take data for crypto
     }).catch(err => {
         if (err) {
             var v = symbol.charAt(0).toUpperCase() + symbol.slice(1);
@@ -133,11 +147,47 @@ $("#pushStock").on("click", function checkPrice() {
                         var addStock = $("<a>").attr("id", "addStock").text("Add to Portfolio").attr("data-symbol", data.cryptocurrenciesList[i].name).attr("data-name", data.cryptocurrenciesList[i].name);
                         $(".card-action").empty();
                         $(".card-action").append(addStock);
-                    }
-                }
+                    };
+                };
             });
-        }
-    })
+        };
+    });
+
+    //create line charts for symbol 
+        var points = [];
+        var prices = [];
+        var w = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=" + symbol + "&apikey=Q26EYZTYRUMY42LC";
+        $.ajax({
+          method: "GET",
+          url: w
+        }).then(response => {
+          var childrenCount = countProperties(response["Weekly Time Series"]);
+          for (var dates in response["Weekly Time Series"]) {
+            var num = parseFloat(response["Weekly Time Series"][dates]["4. close"]);
+            prices.unshift(num);
+          };
+  
+          for (let i = prices.length - 52; i < prices.length; i++) {
+            points.push({y: prices[i]});
+          };
+  
+          var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+              text: "1 year stock history"
+            },
+            axisY: {
+              includeZero: false
+            },
+            data: [{
+              type: "line",
+              dataPoints: points
+            }]
+          });
+          chart.render();
+        })
+
     document.querySelector("#stockSearchForm").reset();
 })
 
