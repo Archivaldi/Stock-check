@@ -45,14 +45,24 @@ const setupStock = (data) => {
                 url: u
             }).then(function (response) {
                 const displayStock = `
-                <div class="card blue-grey darken-1">
-                <div class="displayStock card-content white-text" id="${response.companyName}">
-                    <h2 class="card-title">${response.companyName}</h2>
-                    <p class="symbols">${response.symbol}</p>
-                    <p class="prices"> $${response.latestPrice}</p>
-                    <p class="date">${date}</p>
-                    <button id="removeStock">Remove</button>
-                </div>
+                <div class="row">
+                    <div class="col s12 m4" style="margin-left: 0px;">
+                        <div class="card blue-grey darken-1">
+                            <div class="displayStock card-content white-text" id="${response.companyName}">
+                                <div class="card-content white-text">
+                                    <h2 class="card-title">${response.companyName}</h2>
+                                    <p class="symbols">${response.symbol}</p>
+                                    <p class="prices"> $${response.latestPrice}</p>
+                                    <p class="date">${date}</p>
+                                    <div class="card-action">
+                                        <button id="removeStock">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m4" style="margin-left: 0px;">
+                    </div>
                 </div>
             `
                 html += displayStock;
@@ -127,37 +137,7 @@ $("#pushStock").on("click", function checkPrice() {
         $(".card-action").empty();
         $(".card-action").append(addStock);
 
-        //if we have a error, we know that symbol is not a stoc, then we take data for crypto
-    }).catch(err => {
-        if (err) {
-            var v = symbol.charAt(0).toUpperCase() + symbol.slice(1);
-            var w = "https://financialmodelingprep.com/api/v3/cryptocurrencies";
-            $.ajax({
-                method: "GET",
-                url: w
-            }).then(function (data) {
-                console.log(data);
-                for (var i = 0; i < data.cryptocurrenciesList.length; i++) {
-                    if (v == data.cryptocurrenciesList[i].name) {
-                        // place the price on the html of the card
-                        $("#stockTitle").text(data.cryptocurrenciesList[i].name);
-                        $("#stockInfo").empty();
-                        $("#stockInfo").append("<p>");
-                        $("#stockInfo p:last-child").text("Ticker: " + data.cryptocurrenciesList[i].ticker);
-                        $("#stockInfo").append("<p>");
-                        $("#stockInfo p:last-child").text("Latest price: $" + data.cryptocurrenciesList[i].price);
-                        $("#stockInfo").append("<p>");
-                        $("#stockInfo p:last-child").text(date);
-                        var addStock = $("<a>").attr("id", "addStock").text("Add to Portfolio").attr("data-symbol", data.cryptocurrenciesList[i].name).attr("data-name", data.cryptocurrenciesList[i].name);
-                        $(".card-action").empty();
-                        $(".card-action").append(addStock);
-                    };
-                };
-            });
-        };
-    });
-
-    //create line charts for symbol 
+         //create line charts for symbol 
     var points = [];
     var prices = [];
     var w = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=" + symbol + "&apikey=Q26EYZTYRUMY42LC";
@@ -172,7 +152,7 @@ $("#pushStock").on("click", function checkPrice() {
         };
 
         for (let i = prices.length - 52; i < prices.length; i++) {
-                points.push({ y: prices[i]});                
+            points.push({ y: prices[i] });
         };
 
         var chart = new CanvasJS.Chart("chartContainer", {
@@ -188,12 +168,9 @@ $("#pushStock").on("click", function checkPrice() {
                 type: "line",
                 dataPoints: points
             }]
-        }).catch(err => {
-            console.log(err);
         })
         chart.render();
     })
-
     var pointsDay = [];
     var w = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + symbol + "&interval=5min&apikey=Q26EYZTYRUMY42LC";
 
@@ -228,12 +205,78 @@ $("#pushStock").on("click", function checkPrice() {
                 type: "line",
                 dataPoints: pointsDay
             }]
-        });
+        })
         chart.render();
     })
 
     document.querySelector("#stockSearchForm").reset();
+}).catch(err => {
+    if (err) {
+        var v = symbol.toUpperCase();
+        var w = "https://financialmodelingprep.com/api/v3/cryptocurrencies";
+        $.ajax({
+            method: "GET",
+            url: w
+        }).then(function (data) {
+            
+            for (var i = 0; i < data.cryptocurrenciesList.length; i++) {
+                if (v == data.cryptocurrenciesList[i].ticker) {
+                    // place the price on the html of the card
+                    $("#stockTitle").text(data.cryptocurrenciesList[i].name);
+                    $("#stockInfo").empty();
+                    $("#stockInfo").append("<p>");
+                    $("#stockInfo p:last-child").text("Ticker: " + data.cryptocurrenciesList[i].ticker);
+                    $("#stockInfo").append("<p>");
+                    $("#stockInfo p:last-child").text("Latest price: $" + data.cryptocurrenciesList[i].price);
+                    $("#stockInfo").append("<p>");
+                    $("#stockInfo p:last-child").text(date);
+                    var addStock = $("<a>").attr("id", "addStock").text("Add to Portfolio").attr("data-symbol", data.cryptocurrenciesList[i].name).attr("data-name", data.cryptocurrenciesList[i].name);
+                    $(".card-action").empty();
+                    $(".card-action").append(addStock);
+                };
+            };
+        });
+    var points = [];
+var prices = [];
+var w = "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY&symbol=" + symbol + "&market=USD&apikey=Q26EYZTYRUMY42LC";
+$.ajax({
+    method: "GET",
+    url: w
+}).then(response => {
+    console.log(response);
+    var childrenCount = countProperties(response["Time Series (Digital Currency Weekly)"]);
+    for (var dates in response["Time Series (Digital Currency Weekly)"]) {
+        var num = parseFloat(response["Time Series (Digital Currency Weekly)"][dates]["4a. close (USD)"]);
+        prices.unshift(num);
+    };
+
+    for (let i = prices.length - 52; i < prices.length; i++) {
+        points.push({ y: prices[i] });
+    };
+
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        theme: "light2",
+        title: {
+            text: "1 year stock history"
+        },
+        axisY: {
+            includeZero: false
+        },
+        data: [{
+            type: "line",
+            dataPoints: points
+        }]
+    })
+    chart.render();
 })
+    };
+
+    $("#chartContainer1").empty();
+    })
+    });
+
+   
 
 $(document).on("click", "#addStock", () => {
     if ($("#stockTitle").text() != "Stock Price") {
@@ -266,15 +309,13 @@ function uploadStockInfo() {
                 method: "GET",
                 url: w
             }).then(function (data) {
-                if (err) {
                     for (var p = 0; p < data.cryptocurrenciesList.length; p++) {
-                        if (v == data.cryptocurrenciesList[p].name) {
+                        if (v == data.cryptocurrenciesList[p].ticker) {
                             // place the price on the html of the card
                             stockPrice[i].innerHTML = data.cryptocurrenciesList[p].price;
                             stockLatestDate[i].innerHTML = date;
                         }
                     }
-                }
             });
         });
     };
