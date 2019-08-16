@@ -45,25 +45,17 @@ const setupStock = (data) => {
                 url: u
             }).then(function (response) {
                 const displayStock = `
-                <div class="row">
-                    <div class="col s12 m4" style="margin-left: 0px;">
                         <div class="card blue-grey darken-1">
                             <div class="displayStock card-content white-text" id="${response.companyName}">
-                                <div class="card-content white-text">
                                     <h2 class="card-title">${response.companyName}</h2>
                                     <p class="symbols">${response.symbol}</p>
                                     <p class="prices"> $${response.latestPrice}</p>
+                                    <p>52 weeks High: $${response.week52High}</p>
+                                    <p>52 weeks Low: $${response.week52Low}</p>
                                     <p class="date">${date}</p>
-                                    <div class="card-action">
                                         <button id="removeStock">Remove</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col s12 m4" style="margin-left: 0px;">
-                    </div>
-                </div>
             `
                 html += displayStock;
                 //js finding "portfolio" in both html files
@@ -72,14 +64,14 @@ const setupStock = (data) => {
                 }
             }).catch(err => {
                 if (err) {
-                    var v = symbol.charAt(0).toUpperCase() + symbol.slice(1);
+                    var v = symbol.toUpperCase();
                     var w = "https://financialmodelingprep.com/api/v3/cryptocurrencies";
                     $.ajax({
                         method: "GET",
                         url: w
                     }).then(function (data) {
                         for (var i = 0; i < data.cryptocurrenciesList.length; i++) {
-                            if (v == data.cryptocurrenciesList[i].name) {
+                            if (v == data.cryptocurrenciesList[i].ticker) {
                                 // place the price on the html of the card
                                 const displayStock = `
                 <div class="card blue-grey darken-1">
@@ -230,7 +222,7 @@ $("#pushStock").on("click", function checkPrice() {
                     $("#stockInfo p:last-child").text("Latest price: $" + data.cryptocurrenciesList[i].price);
                     $("#stockInfo").append("<p>");
                     $("#stockInfo p:last-child").text(date);
-                    var addStock = $("<a>").attr("id", "addStock").text("Add to Portfolio").attr("data-symbol", data.cryptocurrenciesList[i].name).attr("data-name", data.cryptocurrenciesList[i].name);
+                    var addStock = $("<a>").attr("id", "addStock").text("Add to Portfolio").attr("data-symbol", data.cryptocurrenciesList[i].ticker).attr("data-name", data.cryptocurrenciesList[i].name);
                     $(".card-action").empty();
                     $(".card-action").append(addStock);
                 };
