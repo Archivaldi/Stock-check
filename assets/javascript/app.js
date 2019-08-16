@@ -21,13 +21,13 @@ function countProperties(obj) {
     var count = 0;
 
     for (var property in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, property)) {
-        count++;
-      }
+        if (Object.prototype.hasOwnProperty.call(obj, property)) {
+            count++;
+        }
     }
 
     return count;
-  }
+}
 
 
 //display firestoredata in portfolio
@@ -75,7 +75,7 @@ const setupStock = (data) => {
                 <div class="card blue-grey darken-1">
                 <div class="displayStock card-content white-text" id="${data.cryptocurrenciesList[i].name}">
                     <h2 class="card-title">${data.cryptocurrenciesList[i].name}</h2>
-                    <p class="symbols">${data.cryptocurrenciesList[i].name}</p>
+                    <p class="symbols">${data.cryptocurrenciesList[i].ticker}</p>
                     <p class="prices"> $${data.cryptocurrenciesList[i].price}</p>
                     <p class="date">${date}</p>
                     <button id="removeStock">Remove</button>
@@ -158,78 +158,80 @@ $("#pushStock").on("click", function checkPrice() {
     });
 
     //create line charts for symbol 
-        var points = [];
-        var prices = [];
-        var w = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=" + symbol + "&apikey=Q26EYZTYRUMY42LC";
-        $.ajax({
-          method: "GET",
-          url: w
-        }).then(response => {
-          var childrenCount = countProperties(response["Weekly Time Series"]);
-          for (var dates in response["Weekly Time Series"]) {
+    var points = [];
+    var prices = [];
+    var w = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=" + symbol + "&apikey=Q26EYZTYRUMY42LC";
+    $.ajax({
+        method: "GET",
+        url: w
+    }).then(response => {
+        var childrenCount = countProperties(response["Weekly Time Series"]);
+        for (var dates in response["Weekly Time Series"]) {
             var num = parseFloat(response["Weekly Time Series"][dates]["4. close"]);
             prices.unshift(num);
-          };
-  
-          for (let i = prices.length - 52; i < prices.length; i++) {
-            points.push({y: prices[i]});
-          };
-  
-          var chart = new CanvasJS.Chart("chartContainer", {
+        };
+
+        for (let i = prices.length - 52; i < prices.length; i++) {
+                points.push({ y: prices[i]});                
+        };
+
+        var chart = new CanvasJS.Chart("chartContainer", {
             animationEnabled: true,
             theme: "light2",
             title: {
-              text: "1 year stock history"
+                text: "1 year stock history"
             },
             axisY: {
-              includeZero: false
+                includeZero: false
             },
             data: [{
-              type: "line",
-              dataPoints: points
+                type: "line",
+                dataPoints: points
             }]
-          });
-          chart.render();
+        }).catch(err => {
+            console.log(err);
         })
+        chart.render();
+    })
 
-        var pointsDay = [];
-        var w = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+symbol+"&interval=5min&apikey=Q26EYZTYRUMY42LC";
-  
-        $.ajax({
-          method: "GET",
-          url: w
-        }).then(response => {
-          var childrenCount = countProperties(response["Time Series (5min)"]);
-    
-          var pricesDay = [];
-    
-          for (var dates in response["Time Series (5min)"]) {
+    var pointsDay = [];
+    var w = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + symbol + "&interval=5min&apikey=Q26EYZTYRUMY42LC";
+
+    $.ajax({
+        method: "GET",
+        url: w
+    }).then(response => {
+        var childrenCount = countProperties(response["Time Series (5min)"]);
+
+        var pricesDay = [];
+
+        for (var dates in response["Time Series (5min)"]) {
             var num = parseFloat(response["Time Series (5min)"][dates]["4. close"]);
             pricesDay.unshift(num);
-          };
-    
-  
-          for (let i = 0; i < pricesDay.length; i++) {
-            pointsDay.push({y: pricesDay[i]});
-          };
-  
-          var chart = new CanvasJS.Chart("chartContainer1", {
+        };
+
+
+        for (let i = 0; i < pricesDay.length; i++) {
+            pointsDay.push({ y: pricesDay[i] });
+        };
+
+        var chart = new CanvasJS.Chart("chartContainer1", {
             animationEnabled: true,
             theme: "light2",
             title: {
-              text: "Today stock history"
+                text: "Today stock history"
             },
             axisY: {
-              includeZero: false
+                includeZero: false
             },
             data: [{
-              type: "line",
-              dataPoints: pointsDay
+                type: "line",
+                dataPoints: pointsDay
             }]
-          });
-          chart.render();
-        })
-  
+        });
+        chart.render();
+    })
+
     document.querySelector("#stockSearchForm").reset();
 })
 
@@ -279,7 +281,7 @@ function uploadStockInfo() {
 };
 
 //checking price every 10sec
-setInterval(uploadStockInfo, 1000*60*5);
+setInterval(uploadStockInfo, 1000 * 60 * 5);
 
 
 document.addEventListener("DOMContentLoaded", function () {
