@@ -53,7 +53,7 @@ const setupStock = (data) => {
                                     <p>52 weeks High: $${response.week52High}</p>
                                     <p>52 weeks Low: $${response.week52Low}</p>
                                     <p class="date">${date}</p>
-                                        <button id="removeStock">Remove</button>
+                                    <a id="removeStock" class="btn-floating btn-large waves-effect waves-light red" style="margin-top: 15px;">X</a>
                             </div>
                         </div>
             `
@@ -80,7 +80,7 @@ const setupStock = (data) => {
                     <p class="symbols">${data.cryptocurrenciesList[i].ticker}</p>
                     <p class="prices"> $${data.cryptocurrenciesList[i].price}</p>
                     <p class="date">${date}</p>
-                    <button id="removeStock">Remove</button>
+                                    <a id="removeStock" class="btn-floating btn-large waves-effect waves-light red" style="margin-top: 15px;">X</a>
                 </div>
                 </div>
             `
