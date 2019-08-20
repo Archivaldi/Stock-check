@@ -341,6 +341,7 @@ $("#questionSubmit").on("click", () => {
             number: counter
         }).then(() => {
             messageForm.reset();
+            goDown();
         });
     }
 });
@@ -351,7 +352,7 @@ const showChat = (data) => {
     let html = "";
     for (let i = 0; i < counter; i++) {
         let userMessage = data[i].data();
-        let messageData = `<p>${userMessage.First_Name} ${userMessage.Last_Name}: ${userMessage.message}</p>`;
+        let messageData = `<div>${userMessage.First_Name} ${userMessage.Last_Name}: ${userMessage.message}</div>`;
         html += messageData;
     }
 
@@ -359,3 +360,8 @@ const showChat = (data) => {
         messageArea.innerHTML = html;
     }
 }
+
+function goDown(){
+    var objDiv = document.getElementById("answer");
+    objDiv.scrollTop = objDiv.scrollHeight;
+};

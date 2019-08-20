@@ -1,4 +1,5 @@
 #answer {
-    height: 175px;
-    overflow: scroll;
-}
+    height: 150px;
+    overflow-y: auto;
+
+} 
