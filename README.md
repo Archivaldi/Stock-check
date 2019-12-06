@@ -9,7 +9,7 @@ Full Stack Web App that makes API calls to check stocks and crypto prices. User 
 If user is signed in, the app allows the user to use chat feature and profile page for saving crypto/stock. Prices in portfolio will change every 5 minutes due to API call restrictions.
 
 ![screenshot](/shots/signedIn.JPG)
-![screenshot](/shots/profile.JPG)
+![screenshot](/shots/portfolio.JPG)
 
 Technologies used: 
 * JavaScript
