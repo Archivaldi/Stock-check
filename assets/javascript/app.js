@@ -318,7 +318,7 @@ setInterval(uploadStockInfo, 1000 * 60 * 5);
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    var modals = document.querySelectorAll(".modal");
+    var modals = document.querySelectorAll(".modal");               
     if (modals) {
         M.Modal.init(modals);
     }
